@@ -8,20 +8,20 @@ const { isLoggedIn, isOwner, validateListing } = require("../middleware.js");
 
 //index route
 router.get("/",wrapAsync(async(req,res)=>{
-    const allListings=await Listing.find({});
+   const allListings = await Listing.find({}).populate("owner");
     res.render("listings/index.ejs",{allListings});
 })
 );
 //new route
 router.get("/new",isLoggedIn,(req,res)=>{
    
-    res.render("/listings/new.ejs");
+   res.render("listings/new.ejs");
 });
 //show route
 router.get("/:id",
     wrapAsync(async(req,res)=>{
         let {id}=req.params;
-        const Listing=await Listing.findbyId(id).populate({        ////
+        const listing=await Listing.findById(id).populate({        ////
             path:"reviews",
            populate:{
             path:"author",
@@ -35,12 +35,12 @@ router.get("/:id",
     })
 )
 //CREATE ROUTE
-router.post("/",isLoggedIn,validateListing,wrapAsync(async(re,res,next)=>{
+router.post("/",isLoggedIn,validateListing,wrapAsync(async(req,res,next)=>{
     const newlisting=new Listing(req.body.listing);
     newlisting.owner=req.user._id;  ////
     await newlisting.save();
     req.flash("success","new listing created");
-    res.redirect("/listing");
+    res.redirect("/listings");
 }))
 //edit route
 router.get("/:id/edit",isLoggedIn,isOwner,wrapAsync(async(req,res)=>{
@@ -62,11 +62,11 @@ router.put("/:id",isLoggedIn,isOwner,validateListing,wrapAsync(async(req,res)=>{
    
     
 }))
-router.delete("/:id", isLoggedIn,isOwner,wrapAsync(async(req,res)=>{
-    let {id}=req.params;
-    let deletedListing=await Listing.findByIdAndDelete(id);
-    console.log(deletedListing);
-    req.flash("success","Listing Deleted!");
+router.delete("/:id", isLoggedIn, isOwner, wrapAsync(async (req, res) => {
+    let { id } = req.params;
+    let removedListing = await Listing.findByIdAndDelete(id);
+    console.log(removedListing);
+    req.flash("success", "Listing Deleted!");
     res.redirect("/listings");
-}))
+}));
 module.exports=router;

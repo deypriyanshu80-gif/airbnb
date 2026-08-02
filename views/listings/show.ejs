@@ -15,7 +15,7 @@
             <img src="<%=listing.image.url%>" class="card-img-top show-img" alt="Listing_image">
             <div class="card-body">
                 <p class="card-text">
-                    Owned By <i><%= listing.owner.username %></i>
+                    Owned By <i><%= listing.owner?.username||"Unknown Owner" %></i>
                 </p>
                 <p class="card-text">
                     <%=listing.description%> 
@@ -32,7 +32,7 @@
             </div>
         </div>
     
-        <% if(currUser && currUser._id.equals(listing.owner._id)) { %>
+        <% if(currUser && listing.owner &&currUser._id.equals(listing.owner._id)) { %>
         <div class="btns">
             <a href="/listings/<%=listing._id%>/edit" class="btn btn-dark edit-btn col-1 offset-3">Edit</a>
 

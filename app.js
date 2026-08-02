@@ -16,6 +16,7 @@ const localStrategy=require("passport-local");
 const User=require("./models/user");
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
+const userRouter=require("./routes/user.js");
 const sessionOptions={
     secret:"mysupersecretcode",
     resave:false,
@@ -58,10 +59,12 @@ app.use((req,res,next)=>{
 });
 app.use("/listings",listingRouter);
 app.use("/listings/:id/reviews",reviewRouter);
-app.all("*",(req,res,next)=>{
+app.use("/",userRouter);
+app.all(/(.*)/,(req,res,next)=>{
     next(new ExpressError(404,"page not found!"));
 })
 app.use((err,req,res,next)=>{
+    console.log(err);
     let{statusCode=500,message="something went wrong"}=err;
     res.status(statusCode).send(message);
 })
