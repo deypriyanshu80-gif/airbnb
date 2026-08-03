@@ -29,5 +29,5 @@ Make sure you have [Node.js](https://nodejs.org/) and [MongoDB](https://www.mong
 
 ### 1. Clone the repository
 ```bash
-git clone [https://github.com/](https://github.com/)[Your-Username]/wanderLust.git
-cd wanderLust
+git clone [https://github.com/deypriyanshu80-gif/airbnb.git](https://github.com/deypriyanshu80-gif/airbnb.git)
+cd airbnb
