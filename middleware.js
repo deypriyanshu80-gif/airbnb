@@ -19,20 +19,12 @@ module.exports.saveRedirectUrl=(req,res,next)=>{        ////
 };
 module.exports.isOwner = async (req, res, next) => {
     let { id } = req.params;
-    
-    // 1. Import the model with a CAPITAL 'L'
     const Listing = require("./models/listing"); 
-    
-    // 2. Fetch data using the Capital 'L' model, save to lowercase 'l' listing
     let listing = await Listing.findById(id);
-    
-    // 3. NOW we can safely check the owner
-    if (!listing.owner.equals(res.locals.currUser._id)) {
+     if (!listing.owner.equals(res.locals.currUser._id)) {
         req.flash("error", "You don't have permission to edit");
         return res.redirect(`/listings/${id}`);
     }
-    
-    // 4. Move on to the delete route
     next();
 };
 module.exports.validateListing=(req,res,next)=>{
